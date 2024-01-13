@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    "target": "es2016",    
-    "module": "commonjs",                                
+    "target": "ES2019",    
+    "module": "CommonJS",                                
     "rootDir": "./src",
     "allowJs": true,
     "outDir": "./dist",  
@@ -14,7 +14,7 @@
     "skipLibCheck": true                              
   },
   "include": [
-    "src/**/*.ts"
+    "./src/**/*.ts"
   ],
   "exclude": [
     "node_modules"
