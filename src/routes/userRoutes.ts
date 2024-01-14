@@ -4,7 +4,7 @@ import { authToken } from '../auth/auth';
 
 const userRoutes = Router();
 
-userRoutes.get('/', authToken, userController.index);
+userRoutes.get('/', authToken, userController.getAll);
 userRoutes.post('/', authToken, userController.create);
 userRoutes.put('/edit/:id', authToken, userController.update)
 
