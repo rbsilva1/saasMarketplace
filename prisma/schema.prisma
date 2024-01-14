@@ -20,6 +20,9 @@ model Product {
   id          Int      @id @default(autoincrement())
   name        String
   description String
+  category    String
+  price       Float
+  quantity    Int
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }

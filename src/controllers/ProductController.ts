@@ -1,18 +1,16 @@
-import { PrismaClient } from "@prisma/client"
 import { Request, Response } from "express";
 import { IProductController } from "../interfaces/IProductController";
-
-const prisma = new PrismaClient();
+import { IProductRepository } from "../interfaces/IProductRepository";
+import { ProductRepository } from "../repositories/ProductRepository";
 
 export class ProductController implements IProductController {
+  constructor(private productRepository: IProductRepository) { }
+
   async getById(req: Request, res: Response) {
     try {
       const productId = Number(req.params.id)
-      const product = await prisma.product.findUnique({
-        where: {
-          id: productId
-        }
-      })
+
+      const product = await this.productRepository.getById(productId);
 
       if (!product) {
         return res.status(400).json({ error: 'Error while getting product' })
@@ -26,13 +24,7 @@ export class ProductController implements IProductController {
 
   async getAll(req: Request, res: Response) {
     try {
-      const products = await prisma.product.findMany({
-        select: {
-          id: true,
-          name: true,
-          description: true
-        }
-      })
+      const products = await this.productRepository.getAll()
 
       if (!products) {
         return res.json(400).json({ error: "Error while trying to get products" })
@@ -47,16 +39,9 @@ export class ProductController implements IProductController {
   async update(req: Request, res: Response) {
     try {
       const id = Number(req.params.id);
-      const { name, description } = req.body;
-      const productUpdated = await prisma.product.update({
-        where: {
-          id
-        },
-        data: {
-          name,
-          description
-        }
-      })
+      const { name, description, price, quantity, category } = req.body;
+
+      const productUpdated = await this.productRepository.update({ name, description, price, quantity, category }, id)
 
       if (!productUpdated) {
         return res.json(400).json({ error: "Error while trying to update product" })
@@ -72,9 +57,7 @@ export class ProductController implements IProductController {
     try {
       const id = Number(req.params.id);
 
-      const product = await prisma.product.delete({
-        where: { id }
-      })
+      const product = await this.productRepository.remove(id)
 
       if (!product) {
         return res.status(200).json({ deleted: true })
@@ -87,4 +70,4 @@ export class ProductController implements IProductController {
   }
 }
 
-export default new ProductController();
+export default new ProductController(new ProductRepository());
