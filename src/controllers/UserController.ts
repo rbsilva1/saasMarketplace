@@ -1,25 +1,37 @@
 import { Request, Response } from "express";
-import { PrismaClient } from "@prisma/client";
 import { hash } from "bcryptjs";
 import { IUserController } from "../interfaces/IUserController";
+import { IUserRepository } from "../interfaces/IUserRepository";
+import { UserRepository } from "../repositories/UserRepository";
 
-const prisma = new PrismaClient();
-
-interface UserPayload {
+export interface UserPayload {
   name: string;
-  email?: string;
+  email: string;
+  password: string;
 }
 
 export class UserController implements IUserController {
-  async index(req: Request, res: Response) {
+  constructor(private UserRepository: IUserRepository) { }
+
+  async remove(req: Request, res: Response) {
     try {
-      const users = await prisma.user.findMany({
-        select: {
-          id: true,
-          name: true,
-          email: true
-        }
-      });
+      const id = Number(req.params.id);
+
+      const deletedUser = this.UserRepository.remove(id)
+
+      if (!deletedUser) {
+        return res.status(400).json({ error: 'Error while trying to remove the user.' })
+      }
+
+      return res.status(200).json({ deleted: deletedUser })
+    } catch (e) {
+      return res.status(500).json({ error: 'Internal Server Error' })
+    }
+  }
+
+  async getAll(req: Request, res: Response) {
+    try {
+      const users = await this.UserRepository.getAll()
 
       if (!users) {
         return res.status(400).json({ message: "Users not found." });
@@ -37,13 +49,7 @@ export class UserController implements IUserController {
 
       const passwordHash = await hash(password, 10);
 
-      const user = await prisma.user.create({
-        data: {
-          name,
-          email,
-          password: passwordHash
-        }
-      });
+      const user = await this.UserRepository.create({ name, email, password: passwordHash })
 
       if (!user) {
         return res.status(400).json({ message: "User not created." });
@@ -60,19 +66,7 @@ export class UserController implements IUserController {
       const id = Number(req.params.id)
       const { name, email }: UserPayload = req.body
 
-      const userUpdated = await prisma.user.update({
-        where: {
-          id
-        },
-        data: {
-          name,
-          email
-        },
-        select: {
-          name: true,
-          email: true
-        }
-      })
+      const userUpdated = await this.UserRepository.update({ name, email }, id)
 
       if (!userUpdated) {
         return res.status(400).json({ error: "Error while trying to update user" })
@@ -84,4 +78,4 @@ export class UserController implements IUserController {
   }
 }
 
-export default new UserController();
+export default new UserController(new UserRepository());
