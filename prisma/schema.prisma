@@ -12,6 +12,7 @@ model User {
   email     String   @unique
   name      String?
   password  String
+  address   String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -25,4 +26,25 @@ model Product {
   quantity    Int
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+
+  Order   Order? @relation(fields: [orderId], references: [id])
+  orderId Int?
+}
+
+model Order {
+  id         Int       @id @default(autoincrement())
+  address    String
+  userEmail  String
+  deliveryId Int?
+  Delivery   Delivery? @relation(fields: [deliveryId], references: [id])
+
+  products Product[]
+}
+
+model Delivery {
+  id     Int    @id @default(autoincrement())
+  value  Float
+  status String
+
+  Order Order[]
 }
