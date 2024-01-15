@@ -2,9 +2,9 @@ import express from 'express';
 import { loginRoutes } from './routes/loginRoutes';
 import { userRoutes } from './routes/userRoutes';
 import { productsRoutes } from './routes/productRoutes';
+import { deliveryRoutes } from './routes/deliveryRoutes';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
-import { deliveryRoutes } from './routes/deliveryRoutes';
 
 const app = express();
 const port = process.env.PORT || 3000;
