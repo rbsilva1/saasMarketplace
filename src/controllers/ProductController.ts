@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { IProductController } from "../interfaces/IProductController";
-import { IProductRepository } from "../interfaces/IProductRepository";
+import { IProductRepository, ProductPayload } from "../interfaces/IProductRepository";
 import { ProductRepository } from "../repositories/ProductRepository";
 
 export class ProductController implements IProductController {
@@ -64,6 +64,22 @@ export class ProductController implements IProductController {
       }
 
       return res.status(400).json({ deleted: false })
+    } catch (e) {
+      return res.status(500).json({ error: 'Internal Server Error ' })
+    }
+  }
+
+  async create(req: Request, res: Response) {
+    try {
+      const product: ProductPayload = req.body
+
+      const createdProduct = await this.productRepository.create(product)
+
+      if (!createdProduct) {
+        return res.status(400).json({ error: 'Error while creating product' })
+      }
+
+      return res.status(200).json(createdProduct)
     } catch (e) {
       return res.status(500).json({ error: 'Internal Server Error ' })
     }

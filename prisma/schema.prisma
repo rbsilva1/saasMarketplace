@@ -8,13 +8,14 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
+  id        Int        @id @default(autoincrement())
+  email     String     @unique
   name      String?
   password  String
   address   String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  Delivery  Delivery[]
 }
 
 model Product {
@@ -45,6 +46,8 @@ model Delivery {
   id     Int    @id @default(autoincrement())
   value  Float
   status String
+  userId Int?
+  User   User?  @relation(fields: [userId], references: [id])
 
   Order Order[]
 }
