@@ -4,6 +4,7 @@ import { userRoutes } from './routes/userRoutes';
 import { productsRoutes } from './routes/productRoutes';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
+import { deliveryRoutes } from './routes/deliveryRoutes';
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -19,6 +20,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use('/users', userRoutes);
 app.use('/products', productsRoutes);
+app.use('/deliveries', deliveryRoutes);
 app.use(loginRoutes);
 
 app.listen(3000, () => {

@@ -1,6 +1,7 @@
 import { IDeliveryController } from "../interfaces/IDeliveryController";
 import { DeliveryPayload, IDeliveryRepository } from "../interfaces/IDeliveryRepository";
 import { Request, Response } from 'express'
+import { DeliveryRepository } from "../repositories/DeliveryRepository";
 
 export class DeliveryController implements IDeliveryController {
   constructor(private deliveryRepository: IDeliveryRepository) { }
@@ -86,3 +87,5 @@ export class DeliveryController implements IDeliveryController {
     }
   }
 }
+
+export default new DeliveryController(new DeliveryRepository());
