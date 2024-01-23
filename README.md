@@ -24,3 +24,4 @@
 - Bcrypt
 - Cors
 - Nodemon
+- Axios to ASAAS API
