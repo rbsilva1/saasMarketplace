@@ -1,3 +1,6 @@
+import { Request, Response } from "express";
+
 export interface IPaymentController {
-  pay: (req: any, res: any) => Promise<any>;
+  pay: (req: Request, res: Response) => Promise<Response>;
+  webhook: (req: Request, res: Response) => Promise<Response>;
 }

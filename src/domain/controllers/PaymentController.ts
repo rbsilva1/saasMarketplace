@@ -12,19 +12,6 @@ interface Session {
 export class PaymentController implements IPaymentController {
   constructor() { }
 
-  async getBySessionId(sessionId: string) {
-    try {
-      const payment = await PaymentRepository.getByPaymentId(sessionId)
-
-      if (!payment) return null
-
-      return payment
-    } catch (e) {
-      // @ts-ignore
-      return res.status(500).json({ error: 'Internal Server Error' })
-    }
-  }
-
   async pay(req: Request, res: Response) {
     try {
       const { id } = req.user
@@ -71,7 +58,7 @@ export class PaymentController implements IPaymentController {
         return res.status(400).json({ error: 'Missing parameters' })
       }
 
-      const getPayment = await this.getBySessionId(payload.payment.id)
+      const getPayment = await PaymentRepository.getByPaymentId(payload.payment.id)
 
       if (!getPayment) {
         return res.status(400).json({ error: 'Payment not found' })
