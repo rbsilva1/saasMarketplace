@@ -66,11 +66,12 @@ model Category {
 }
 
 model Payment {
-  id     Int    @id @default(autoincrement())
-  value  Float
-  status String
-  userId Int?
-  User   User?  @relation(fields: [userId], references: [id])
+  id        Int    @id @default(autoincrement())
+  value     Float
+  status    String
+  userId    Int?
+  paymentId String @unique
+  User      User?  @relation(fields: [userId], references: [id])
 
   Order Order[]
 }

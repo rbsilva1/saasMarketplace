@@ -5,6 +5,7 @@ import { prisma } from "../services/prisma";
 
 interface User {
   email: string;
+  id: number;
 }
 
 declare global {
@@ -31,6 +32,7 @@ export const authToken = async (req: Request, res: Response, next: NextFunction)
       throw new Error("Invalid token.");
     }
 
+    req.user = decoded as User;
     return next();
   } catch (error) {
     return res.status(500).json({ message: "Internal server error." });
@@ -55,7 +57,9 @@ export const signIn = async (req: Request, res: Response) => {
     return res.status(400).json({ message: "Invalid password." });
   }
 
-  res.cookie("auth", jwt.sign({ email }, secret), {
+  const { id } = user;
+
+  res.cookie("auth", jwt.sign({ email, id }, secret), {
     httpOnly: true,
     maxAge: 7 * 86400,
     path: "/",
