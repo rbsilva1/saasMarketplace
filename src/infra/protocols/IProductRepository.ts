@@ -2,7 +2,7 @@ import { Product } from "@prisma/client";
 
 export interface ProductPayload {
   name: string;
-  category: string;
+  categoryId: number;
   price: number;
   description: string;
   quantity: number;

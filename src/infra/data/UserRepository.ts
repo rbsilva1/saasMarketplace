@@ -1,18 +1,13 @@
-import { PrismaClient, User } from "@prisma/client"
-import { UserPayload } from "../../domain/controllers/UserController"
-import { IUserRepository } from "../protocols/IUserRepository"
+import { IUserRepository, UserPayload } from "../protocols/IUserRepository";
+import { prisma } from "../../domain/services/prisma";
 
-export class UserRepository implements IUserRepository {
-  private prisma: PrismaClient
-
-  constructor() {
-    this.prisma = new PrismaClient()
-  }
+class UserRepository implements IUserRepository {
+  constructor() { }
 
   async create(payload: UserPayload) {
     const { email, name, password } = payload
 
-    const user = await this.prisma.user.create({
+    const user = await prisma.user.create({
       data: {
         name,
         email,
@@ -28,7 +23,7 @@ export class UserRepository implements IUserRepository {
   async update(payload: Partial<UserPayload>, id: number) {
     const { email, name, password } = payload
 
-    const updatedUser = await this.prisma.user.update({
+    const updatedUser = await prisma.user.update({
       where: {
         id
       },
@@ -45,7 +40,7 @@ export class UserRepository implements IUserRepository {
   }
 
   async remove(id: number) {
-    const removedUser = await this.prisma.user.delete({
+    const removedUser = await prisma.user.delete({
       where: {
         id
       }
@@ -57,8 +52,10 @@ export class UserRepository implements IUserRepository {
   }
 
   async getAll() {
-    const users = await this.prisma.user.findMany({})
+    const users = await prisma.user.findMany({})
 
     return users;
   }
 }
+
+export default new UserRepository()

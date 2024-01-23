@@ -1,8 +1,9 @@
 import { Router } from 'express'
-import deliveryController from '../controllers/DeliveryController'
+import { DeliveryController } from '../controllers/DeliveryController'
 import { authToken } from '../auth/auth'
 
 const deliveryRoutes = Router()
+const deliveryController = new DeliveryController()
 
 deliveryRoutes.get('/:id', authToken, deliveryController.getById)
 deliveryRoutes.get('/user/:id', authToken, deliveryController.getUserDeliveries)

@@ -1,14 +1,11 @@
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "../../domain/services/prisma";
 import { DeliveryPayload, IDeliveryRepository } from "../protocols/IDeliveryRepository";
 
 export class DeliveryRepository implements IDeliveryRepository {
-  private prisma: PrismaClient
-  constructor() {
-    this.prisma = new PrismaClient()
-  }
+  constructor() { }
 
   async getById(id: number) {
-    const delivery = await this.prisma.delivery.findUnique({
+    const delivery = await prisma.delivery.findUnique({
       where: {
         id
       }
@@ -20,7 +17,7 @@ export class DeliveryRepository implements IDeliveryRepository {
   }
 
   async remove(id: number) {
-    const removedDelivery = await this.prisma.delivery.delete({
+    const removedDelivery = await prisma.delivery.delete({
       where: {
         id
       }
@@ -32,7 +29,7 @@ export class DeliveryRepository implements IDeliveryRepository {
   }
 
   async update(payload: DeliveryPayload, id: number) {
-    const updatedDelivery = await this.prisma.delivery.update({
+    const updatedDelivery = await prisma.delivery.update({
       where: {
         id
       },
@@ -45,7 +42,7 @@ export class DeliveryRepository implements IDeliveryRepository {
   }
 
   async create(payload: DeliveryPayload) {
-    const createdDelivery = await this.prisma.delivery.create({
+    const createdDelivery = await prisma.delivery.create({
       data: payload
     })
 
@@ -55,7 +52,7 @@ export class DeliveryRepository implements IDeliveryRepository {
   };
 
   async getUserDeliveries(id: number) {
-    const userDeliveries = await this.prisma.delivery.findMany({
+    const userDeliveries = await prisma.delivery.findMany({
       where: {
         userId: id
       }
@@ -65,4 +62,6 @@ export class DeliveryRepository implements IDeliveryRepository {
 
     return userDeliveries
   }
-} 
+}
+
+export default new DeliveryRepository()

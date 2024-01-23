@@ -1,19 +1,16 @@
-import { PrismaClient } from "@prisma/client";
 import { IProductRepository } from "../protocols/IProductRepository";
 import { ProductPayload } from "../protocols/IProductRepository";
+import { prisma } from "../../domain/services/prisma";
 
 export class ProductRepository implements IProductRepository {
-  private prisma: PrismaClient
-
-  constructor() {
-    this.prisma = new PrismaClient()
-  }
-  async update(product: ProductPayload, id: number) {
-    const updatedProduct = await this.prisma.product.update({
+  async update(product: Partial<ProductPayload>, id: number) {
+    const updatedProduct = await prisma.product.update({
       where: {
         id
       },
-      data: product
+      data: {
+        ...product
+      }
     })
 
     if (!updatedProduct) return null
@@ -22,7 +19,7 @@ export class ProductRepository implements IProductRepository {
   }
 
   async create(product: ProductPayload) {
-    const createdProduct = await this.prisma.product.create({
+    const createdProduct = await prisma.product.create({
       data: product
     })
 
@@ -32,7 +29,7 @@ export class ProductRepository implements IProductRepository {
   }
 
   async remove(id: number) {
-    const removedProduct = await this.prisma.product.delete({
+    const removedProduct = await prisma.product.delete({
       where: { id }
     })
 
@@ -42,7 +39,7 @@ export class ProductRepository implements IProductRepository {
   }
 
   async getById(id: number) {
-    const product = await this.prisma.product.findUnique({
+    const product = await prisma.product.findUnique({
       where: { id }
     })
 
@@ -52,10 +49,12 @@ export class ProductRepository implements IProductRepository {
   }
 
   async getAll() {
-    const products = await this.prisma.product.findMany({})
+    const products = await prisma.product.findMany({})
 
     if (!products) return null
 
     return products
   }
 }
+
+export default new ProductRepository()

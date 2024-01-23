@@ -1,13 +1,13 @@
 import { Router } from 'express';
-import userController from '../controllers/UserController';
+import UserController from '../controllers/UserController';
 import { authToken } from '../auth/auth';
 
 const userRoutes = Router();
+const userController = new UserController();
 
-userRoutes.get('/', authToken, userController.getAll);
-userRoutes.post('/', authToken, userController.create);
+userRoutes.get('/', userController.getAll);
+userRoutes.post('/', userController.create);
 userRoutes.put('/edit/:id', authToken, userController.update)
 userRoutes.delete('/:id', authToken, userController.remove)
-userRoutes.get('/', authToken, userController.getAll)
 
 export { userRoutes };

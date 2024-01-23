@@ -1,16 +1,16 @@
 import { Request, Response } from "express";
 import { IProductController } from "../interfaces/IProductController";
-import { IProductRepository, ProductPayload } from "../../infra/protocols/IProductRepository";
-import { ProductRepository } from "../../infra/data/ProductRepository";
+import { ProductPayload } from "../../infra/protocols/IProductRepository";
+import ProductRepository from "../../infra/data/ProductRepository";
 
 export class ProductController implements IProductController {
-  constructor(private productRepository: IProductRepository) { }
+  constructor() { }
 
   async getById(req: Request, res: Response) {
     try {
       const productId = Number(req.params.id)
 
-      const product = await this.productRepository.getById(productId);
+      const product = await ProductRepository.getById(productId);
 
       if (!product) {
         return res.status(400).json({ error: 'Error while getting product' })
@@ -24,7 +24,7 @@ export class ProductController implements IProductController {
 
   async getAll(req: Request, res: Response) {
     try {
-      const products = await this.productRepository.getAll()
+      const products = await ProductRepository.getAll()
 
       if (!products) {
         return res.json(400).json({ error: "Error while trying to get products" })
@@ -39,9 +39,9 @@ export class ProductController implements IProductController {
   async update(req: Request, res: Response) {
     try {
       const id = Number(req.params.id);
-      const { name, description, price, quantity, category } = req.body;
+      const { name, description, price, quantity, categoryId } = req.body;
 
-      const productUpdated = await this.productRepository.update({ name, description, price, quantity, category }, id)
+      const productUpdated = await ProductRepository.update({ name, description, price, quantity, categoryId }, id)
 
       if (!productUpdated) {
         return res.json(400).json({ error: "Error while trying to update product" })
@@ -57,7 +57,7 @@ export class ProductController implements IProductController {
     try {
       const id = Number(req.params.id);
 
-      const product = await this.productRepository.remove(id)
+      const product = await ProductRepository.remove(id)
 
       if (!product) {
         return res.status(200).json({ deleted: true })
@@ -73,7 +73,7 @@ export class ProductController implements IProductController {
     try {
       const product: ProductPayload = req.body
 
-      const createdProduct = await this.productRepository.create(product)
+      const createdProduct = await ProductRepository.create(product)
 
       if (!createdProduct) {
         return res.status(400).json({ error: 'Error while creating product' })
@@ -85,5 +85,3 @@ export class ProductController implements IProductController {
     }
   }
 }
-
-export default new ProductController(new ProductRepository());

@@ -8,28 +8,32 @@ datasource db {
 }
 
 model User {
-  id        Int        @id @default(autoincrement())
-  email     String     @unique
-  name      String?
-  password  String
-  address   String?
+  id       Int     @id @default(autoincrement())
+  email    String  @unique
+  name     String?
+  password String
+  address  String?
+
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
   Delivery  Delivery[]
+  Payment   Payment[]
 }
 
 model Product {
   id          Int      @id @default(autoincrement())
   name        String
   description String
-  category    String
+  category    Category @relation(fields: [categoryId], references: [id])
   price       Float
   quantity    Int
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
 
-  Order   Order? @relation(fields: [orderId], references: [id])
-  orderId Int?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Order      Order? @relation(fields: [orderId], references: [id])
+  orderId    Int?
+  categoryId Int
 }
 
 model Order {
@@ -39,10 +43,29 @@ model Order {
   deliveryId Int?
   Delivery   Delivery? @relation(fields: [deliveryId], references: [id])
 
-  products Product[]
+  products  Product[]
+  Payment   Payment?  @relation(fields: [paymentId], references: [id])
+  paymentId Int?
 }
 
 model Delivery {
+  id     Int    @id @default(autoincrement())
+  value  Float
+  status String
+  userId Int?
+  User   User?  @relation(fields: [userId], references: [id])
+
+  Order Order[]
+}
+
+model Category {
+  id   Int    @id @default(autoincrement())
+  name String
+
+  Product Product[]
+}
+
+model Payment {
   id     Int    @id @default(autoincrement())
   value  Float
   status String

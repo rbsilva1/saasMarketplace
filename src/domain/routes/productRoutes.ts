@@ -1,8 +1,9 @@
 import { Router } from 'express'
-import productController from '../controllers/ProductController'
 import { authToken } from '../auth/auth'
+import { ProductController } from '../controllers/ProductController'
 
 const productsRoutes = Router()
+const productController = new ProductController()
 
 productsRoutes.get('/:id', authToken, productController.getById)
 productsRoutes.get('/', productController.getAll)
