@@ -1,6 +1,6 @@
 import { PrismaClient, User } from "@prisma/client"
-import { UserPayload } from "../controllers/UserController"
-import { IUserRepository } from "../interfaces/IUserRepository"
+import { UserPayload } from "../../domain/controllers/UserController"
+import { IUserRepository } from "../protocols/IUserRepository"
 
 export class UserRepository implements IUserRepository {
   private prisma: PrismaClient

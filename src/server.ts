@@ -1,8 +1,8 @@
 import express from 'express';
-import { loginRoutes } from './routes/loginRoutes';
-import { userRoutes } from './routes/userRoutes';
-import { productsRoutes } from './routes/productRoutes';
-import { deliveryRoutes } from './routes/deliveryRoutes';
+import { loginRoutes } from './domain/routes/loginRoutes';
+import { userRoutes } from './domain/routes/userRoutes';
+import { productsRoutes } from './domain/routes/productRoutes';
+import { deliveryRoutes } from './domain/routes/deliveryRoutes';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 

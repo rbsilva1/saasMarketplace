@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { IProductController } from "../interfaces/IProductController";
-import { IProductRepository, ProductPayload } from "../interfaces/IProductRepository";
-import { ProductRepository } from "../repositories/ProductRepository";
+import { IProductRepository, ProductPayload } from "../../infra/protocols/IProductRepository";
+import { ProductRepository } from "../../infra/data/ProductRepository";
 
 export class ProductController implements IProductController {
   constructor(private productRepository: IProductRepository) { }

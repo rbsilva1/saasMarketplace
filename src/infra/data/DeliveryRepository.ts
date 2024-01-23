@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import { DeliveryPayload, IDeliveryRepository } from "../interfaces/IDeliveryRepository";
+import { DeliveryPayload, IDeliveryRepository } from "../protocols/IDeliveryRepository";
 
 export class DeliveryRepository implements IDeliveryRepository {
   private prisma: PrismaClient

@@ -1,5 +1,5 @@
 import { User } from "@prisma/client";
-import { UserPayload } from "../controllers/UserController";
+import { UserPayload } from "../../domain/controllers/UserController";
 
 export interface IUserRepository {
   create: (payload: UserPayload) => Promise<User | null>

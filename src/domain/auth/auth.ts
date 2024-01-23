@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import { passwordValidation } from "../utils/passwordValidation";
+import { passwordValidation } from "../../utils/passwordValidation";
 import { PrismaClient } from "@prisma/client";
 
 interface User {

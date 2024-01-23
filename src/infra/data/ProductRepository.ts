@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
-import { IProductRepository } from "../interfaces/IProductRepository";
-import { ProductPayload } from "../interfaces/IProductRepository";
+import { IProductRepository } from "../protocols/IProductRepository";
+import { ProductPayload } from "../protocols/IProductRepository";
 
 export class ProductRepository implements IProductRepository {
   private prisma: PrismaClient

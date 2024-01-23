@@ -1,7 +1,7 @@
 import { IDeliveryController } from "../interfaces/IDeliveryController";
-import { DeliveryPayload, IDeliveryRepository } from "../interfaces/IDeliveryRepository";
+import { DeliveryPayload, IDeliveryRepository } from "../../infra/protocols/IDeliveryRepository";
 import { Request, Response } from 'express'
-import { DeliveryRepository } from "../repositories/DeliveryRepository";
+import { DeliveryRepository } from "../../infra/data/DeliveryRepository";
 
 export class DeliveryController implements IDeliveryController {
   constructor(private deliveryRepository: IDeliveryRepository) { }

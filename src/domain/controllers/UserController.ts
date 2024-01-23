@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import { hash } from "bcryptjs";
 import { IUserController } from "../interfaces/IUserController";
-import { IUserRepository } from "../interfaces/IUserRepository";
-import { UserRepository } from "../repositories/UserRepository";
+import { IUserRepository } from "../../infra/protocols/IUserRepository";
+import { UserRepository } from "../../infra/data/UserRepository";
 
 export interface UserPayload {
   name: string;
